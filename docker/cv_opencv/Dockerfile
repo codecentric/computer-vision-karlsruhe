@@ -27,7 +27,7 @@ RUN apt-get install -y \
     libpng-dev \
     libtiff-dev \
     libjasper-dev \
-    libavformat-dev
+    libavformat-dev x11-apps libgtk2.0-dev pkg-config
 
 RUN apt-get -y clean all
 RUN rm -rf /var/lib/apt/lists/*
@@ -55,10 +55,4 @@ RUN rm -r /app/opencv-${cv_version}
 
 RUN chown cv_user:cv_user /app/.
 
-ADD files/video.mp4 /app/video.mp4
-RUN apt-get update
-RUN apt-get install -y x11-apps
-
-RUN apt-get -y clean all
-RUN rm -rf /var/lib/apt/lists/*
 
