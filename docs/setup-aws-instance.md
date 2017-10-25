@@ -1,5 +1,16 @@
 # AWS GPU Instanz mit OpenCV und Tensorflow einrichten
 
+## Überblick
+
+* Setze AWS GPU Instanz mit Ubuntu 16.04 auf
+* Server updaten und rebooten
+* Installiere CUDA und cuDNN (von NVIDIA)
+* Installiere OpenCV 3.3 mit Python 3.5
+* Installiere Tensorflow
+* (Installiere Caffe)
+
+### GPU Instanz einrichten 
+
 * starte p2.xlarge Instanz
 * erstelle Keypair "gpu-instance.pem"
 * EBS Festplatte mit 30 GB (30 GB sind im Free-Tier enthalten und verursachen so keine Kosten, 
@@ -7,7 +18,7 @@
 * mit Ubuntu Server 16.04 LTS
 * mit öffentlich erreichbarer IP Adresse
 
-## Auf Server anmelden und auf neuesten Stand bringen
+### Auf Server anmelden und auf neuesten Stand bringen
 
 ```
 ssh -i ~/.ssh/gpuserver.pem ubuntu@54.154.14.XXX
@@ -18,31 +29,29 @@ apt dist-upgrade
 reboot
 ```
 
-## Installiere Dependencies
+### Installiere Dependencies
 
 ```
 sudo -i
 apt install -y gcc g++ gfortran build-essential \
     git wget linux-image-generic libopenblas-dev \
-    python-dev python-pip python-nose python-numpy \
-    python-scipy liblapack-dev libblas-dev cmake unzip \
+    liblapack-dev libblas-dev cmake unzip \
     pkg-config libopenblas-dev linux-source linux-headers-generic \
     python3 python3-pip libffi-dev libssl-dev tmux emacs24-nox liblapacke-dev checkinstall \
-    virtualenvwrapper python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev \
-    libjasper-dev libdc1394-22-dev libavcodec-dev libavformat-dev libswscale-dev libb4l libv4l-dev \
+    virtualenvwrapper libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev \
+    libjasper-dev libdc1394-22-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev \
     libxvidcore-dev libx264-dev libgtk-3-dev libatlas-base-dev gfortran \
-    python2.7-dev python3.5-dev libcupti-dev gstreamer1.0
+    python3.5-dev libcupti-dev gstreamer1.0 ffmpeg libhdf5-serial-dev
 
 ``` 
     
 ## Installiere CUDA
 
+* Download CUDA 8 und cuDNN 6 von NVIDIA
 http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4WNL7OgLr
 
 ```
-wget https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers/cuda_9.0.176_384.81_linux-run
-chmod u+x cuda_9.0.176_384.81_linux-run
-./cuda_9.0.176_384.81_linux-run
+
 
 ```
 
@@ -137,11 +146,26 @@ logout/login
 mkvirtualenv -p /usr/local/bin/python3.6 computer-vision
 
 
-cd ~/my_libs
+``` 
 wget -O opencv.zip https://github.com/opencv/opencv/archive/3.3.0.zip
 unzip opencv.zip
 wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/3.3.0.zip
 unzip opencv_contrib.zip
-
+```
 
 pip install numpy h5py
+
+``` 
+cd opencv-3.3.0
+$ mkdir build
+$ cd build
+$ cmake -D CMAKE_BUILD_TYPE=RELEASE \
+    -D CMAKE_INSTALL_PREFIX=/usr/local \
+    -D WITH_CUDA=ON \
+    -D ENABLE_FAST_MATH=1 \
+    -D CUDA_FAST_MATH=1 \
+    -D WITH_CUBLAS=1 \
+    -D INSTALL_PYTHON_EXAMPLES=ON \
+    -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.3.0/modules \
+    -D BUILD_EXAMPLES=ON ..
+    ```
