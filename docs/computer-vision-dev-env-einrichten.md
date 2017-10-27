@@ -26,13 +26,15 @@ Die Verwendung der lokalen und cloudbasierten Entwicklungsumgebung hängt stark 
 
 Vor der Installation von OpenCV müssen einige Abhängigkeiten installiert werden. Bei linux basierten Betriebssystem wie Ubuntu und OS X könnt ihr OpenCV über die Paketemanager (apt, brew) installieren. Dennoch empfehlen wir euch OpenCV selbst aufzusetzen. Dies hat den Vorteil, dass ihr neuste Versionen von OpenCV installieren könnt und es nach der Installation stabiler läuft.
 
-Weiterhin empfehlen wir euch virtuelle Python Umgebungen mit bspw. virtualenv oder conda aufzusetzen.
+Weiterhin empfehlen wir euch virtuelle Python Umgebungen mit bspw. virtualenv oder conda aufzusetzen. Ihr könnt auch 
+lokal eine virtuelle Maschine installieren. Dazu verwenden wir zum Beispiel vmware Fusion. In der Regel sind die Pakete 
+unter Ubuntu am einfachsten einzurichten - aber man kriegt sie auch auf dem Mac zum Laufen. 
 
 ### Ubuntu
 Für die Installation von OpenCV auf einer Ubuntu Distribution empfehlen wir euch folgenden Guide:
 * [Pyimagesearch - ubuntu 16.04. - how to install opencv](https://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/)
 
-### Os X
+### OS X
 * [Brew opencv](https://www.pyimagesearch.com/2016/12/19/install-opencv-3-on-macos-with-homebrew-the-easy-way/)
 * [OpenCV from Source](https://www.pyimagesearch.com/2016/12/05/macos-install-opencv-3-and-python-3-5/)
 
