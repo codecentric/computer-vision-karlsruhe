@@ -12,7 +12,7 @@ filters = [{'Name': 'tag:Name', 'Values': ['computer-vision-gpu']}]
 instances = ec2.instances.filter(Filters=filters)
 num_instances = len(list(instances))
 
-# expecting only 1 instance ... else break here
+# expecting exactly 1 instance ... else break here
 assert num_instances == 1
 
 instance = list(instances).pop()
