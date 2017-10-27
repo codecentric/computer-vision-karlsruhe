@@ -39,6 +39,9 @@ Weiterhin empfehlen wir euch, virtuelle Python Umgebungen mit bspw. virtualenv o
 lokal eine virtuelle Maschine installieren. Dazu verwenden wir zum Beispiel vmware Fusion. In der Regel sind die Pakete 
 unter Ubuntu am einfachsten einzurichten - aber man kriegt sie auch auf dem Mac zum Laufen. 
 
+Wir wollen an dieser Stelle nicht das Rad neu erfinden sondern verweisen einfach an die Anleitung von 
+pyimagesearch.com ... siehe:
+
 ### Ubuntu
 Für die Installation von OpenCV auf einer Ubuntu Distribution empfehlen wir euch folgenden Guide:
 * [Pyimagesearch - ubuntu 16.04. - how to install opencv](https://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/)
