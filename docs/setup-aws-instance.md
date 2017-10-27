@@ -1,5 +1,8 @@
 # AWS GPU Instanz mit OpenCV und Tensorflow einrichten
 
+Wer in seinem Notebook keine aktuelle Nvidia Grafikkarte hat, der kann sich eine AWS GPU Instanz bauen und diese
+als Entwicklungsumgebung verwenden.
+
 ## Überblick
 
 * Setze AWS GPU Instanz mit Ubuntu 16.04 auf
@@ -7,11 +10,19 @@
 * Installiere CUDA und cuDNN (von NVIDIA)
 * Installiere OpenCV 3.3 mit Python 3.5
 * Installiere Tensorflow
+* Installiere Jupyter Notebook
 * (Installiere Caffe)
 
 ### GPU Instanz einrichten 
 
-* starte p2.xlarge Instanz
+Als erstes logged man sich in der AWS Console ein und geht in den Bereich "EC2". Dort wählt man "Launch Instance", um 
+eine neue Instanz zu starten.
+
+Inline-style: 
+![choose_image](/resources/images/aws_choose_image.png)
+
+
+
 * erstelle Keypair "gpu-instance.pem"
 * EBS Festplatte mit 30 GB (30 GB sind im Free-Tier enthalten und verursachen so keine Kosten, 
   wenn Instanz gestoppt ist)
