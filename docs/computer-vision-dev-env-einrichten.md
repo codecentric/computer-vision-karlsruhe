@@ -24,7 +24,18 @@ Anleitung findet ihr hier: [AWS Instanz einrichten mit GPU / CUDA](/docs/setup-a
 
 Jetzt konfigurieren wir PyCharm so, dass wir einen Remote Interpreter verwenden und dass wir vor jedem "Run" einen 
 rsync mit dem Zielsystem machen. Per X11 Forwarding können wir dann zusätzlich den Output der Fenster, die auf 
-der AWS Instanz erzeugt werden, lokal anzeigen.
+der AWS Instanz erzeugt werden, lokal anzeigen. Das funktioniert für Einzelbilder recht gut, bei Videos müssen wir 
+evtl. andere Methoden verwenden. 
+
+Geht im PyCharm auf Preferences / Deployment und richtet einen SFTP Server ein.
+![remote_server](/resources/images/remote_deployment_server.png)
+
+Unter Project Interpreter fügen wir einen Remote-Interpreter hinzu.
+![remote_interpreter](/resources/images/remote_interpreter.png)
+
+Bei der Default Run Configuration müssen div. Umgebungsvariablen gesetzt werden.
+![run_config](/resources/images/run_config.png) 
+
 
 ... rsync script
 ... X11 forwarding / jupyter notebook
