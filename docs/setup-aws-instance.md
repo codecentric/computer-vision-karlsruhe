@@ -60,7 +60,7 @@ chmod 400 ~/.ssh/gpuserver.pem
 # speichere deine Public IP in einer Umgebungs-Variable
 PUBLIC_IP = "YOUR_IP_HERE"
 
-# füge deinen SSH Key dem SSH-Agent hinz
+# füge deinen SSH Key dem SSH-Agent hinzu
 
 ssh-agent
 ssh-add ~/.ssh/gpuserver.pem
@@ -75,9 +75,13 @@ apt dist-upgrade
 reboot
 ```
 
+Nach dem Reboot, wieder auf dem System anmelden und ...
+
 ### Installiere Dependencies
 
-```
+Für OpenCV, Tensorflow usw. benötigen wir einige Dependencies, um diese später installieren/compilieren zu können.
+
+```bash
 sudo -i
 apt install -y gcc g++ gfortran build-essential \
     git wget linux-image-generic libopenblas-dev \
@@ -88,20 +92,27 @@ apt install -y gcc g++ gfortran build-essential \
     libjasper-dev libdc1394-22-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev \
     libxvidcore-dev libx264-dev libgtk-3-dev libatlas-base-dev gfortran \
     python3.5-dev libcupti-dev gstreamer1.0 ffmpeg libhdf5-serial-dev
-
 ``` 
     
 ## Installiere CUDA
 
-* Download CUDA 8 und cuDNN 6 von NVIDIA
+Um mit der NVIDIA GPU arbeiten zu können, müssen wir CUDA installieren. Dieses kannst du auf der NVIDIA Webseite 
+runter laden. Für cuDNN musst du einen NVIDIA Developer Account anlegen (kostet nichts) und die Lizenzbedingungen 
+akzeptieren ... Wir verwenden CUDA 8.0 und cuDNN 6.0 - bei neueren Versionen kann es sein, dass später die Builds nicht
+funktionieren.
+
+Ob die GPU im Rechner angesprochen werden kann, kann man grundsätzlich wie folgt testen:
+
+```bash
+lspci | grep -i nvidia                              
+00:1e.0 3D controller: NVIDIA Corporation GK210GL [Tesla K80] (rev a1)   
+```
+
+Die Anleitung zur CUDA Installation liegt hier:
 http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4WNL7OgLr
 
-```
 
-
-```
-
-Die Fragen beantworten:
+CUDA Installation anstossen:
 
 ``` 
 Do you accept the previously read EULA?
@@ -120,16 +131,16 @@ This option should not be used on systems that require a custom
 X configuration, such as systems with multiple GPU vendors.
 (y)es/(n)o/(q)uit [ default is no ]: 
 
-Install the CUDA 9.0 Toolkit?
+Install the CUDA 8.0 Toolkit?
 (y)es/(n)o/(q)uit: y
 
 Enter Toolkit Location
- [ default is /usr/local/cuda-9.0 ]: 
+ [ default is /usr/local/cuda-8.0 ]: 
 
 Do you want to install a symbolic link at /usr/local/cuda?
 (y)es/(n)o/(q)uit: y
 
-Install the CUDA 9.0 Samples?
+Install the CUDA 8.0 Samples?
 (y)es/(n)o/(q)uit: y
 
 Enter CUDA Samples Location
