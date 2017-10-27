@@ -68,9 +68,15 @@ Unter Project Interpreter fügen wir einen Remote-Interpreter hinzu.
 Bei der Default Run Configuration müssen div. Umgebungsvariablen gesetzt werden.
 ![run_config](/resources/images/run_config.png) 
 
+Danach könnt ihr lokal in eurer PyCharm IDE entwickeln und den Code im Remote Interpreter auf der AWS Instanz laufen 
+lassen. Damit das X-Forwarding funktioniert, müsst ihr wie folgt auf der Maschine angemeldet sein (-X Parameter für 
+X-Forwarding):
 
-... rsync script
-... X11 forwarding / jupyter notebook
+```bash
+ ssh -X -i ~/.ssh/gpuserver.pem ubuntu@YOUR_PUBLIC_IP
+```
+
+### jupyter notebook
 
 ## (streaming output)
 
