@@ -14,7 +14,13 @@ Bei der Entwicklung von OpenCV Projekten gibt es unterschiedliche Herangehenswei
 heraus kristalliert haben. Einerseits kann mit den lokalen Resourcen auf der eigenen Maschine entwickelt werden. Andererseits kann lokal auf der eigenen Maschine mit den Resourcen aus der Cloud entwickelt werden. Im Folgendem werden die beiden Ansätze sowie die Einrichtung beider Entwicklungsumgebungen beschrieben.
 
 ### Lokale Entwicklung
-Bei der lokalen Entwicklung werden die Resourcen der eigenen Maschine beansprucht. Das bedeutet, dass keine Kommunikation bei der Verarbeitung der Bilder mit anderen Maschinen statt findet. Dieser Ansatz hat den Vorteil, dass die eigene Entwicklungsumgebung sehr schnell und einfach aufgesetzt werden kann. Weiterhin müssen unsere Daten nicht an Drittanbieter (bspw. Cloudanbieter) für die Verarbeitung nicht weitergegeben werden. Problematisch ist die lokale Entwicklung besonders dann, wenn wir resourcen intensive Berechnungen durchführen, bei denen oftmals auf die Grafikkarte und nicht auf die CPU zurückgegriffen werden. Da nicht jeder über die neusten Grafikkarten verfügt, können neue Entwicklungen aus dem Deep Learning Bereich nicht optimal dargestellt werden. 
+Bei der lokalen Entwicklung werden die Resourcen der eigenen Maschine beansprucht. Das bedeutet, dass keine 
+Kommunikation bei der Verarbeitung der Bilder mit anderen Maschinen statt findet. Dieser Ansatz hat den Vorteil, dass 
+die eigene Entwicklungsumgebung sehr schnell und einfach aufgesetzt werden kann. Weiterhin müssen unsere Daten nicht 
+an Drittanbieter (bspw. Cloudanbieter) für die Verarbeitung nicht weitergegeben werden. Problematisch ist die lokale 
+Entwicklung besonders dann, wenn wir resourcen intensive Berechnungen durchführen, bei denen oftmals auf die 
+Grafikkarte und nicht auf die CPU zurückgegriffen werden. Da nicht jeder über die neusten Grafikkarten verfügt, 
+können neue Entwicklungen aus dem Deep Learning Bereich nicht optimal dargestellt werden. 
 
 ### Cloud Entwicklung
 Bei der Cloud Entwicklung findet die Entwicklung auf dem lokalen Computer statt, während die Ausführung auf einem anderen Computer stattfindet. Durch diesen Ansatz haben wir mehr Rechenpower zur Verfügung und können dadurch leichter Bleeding Edge Methoden testen. Leider sind mit dieser Vorgehensweise auch mehrere Nachteile verbunden. Wir müssen unsere Daten bei Drittanbietern für die Verarbeitung abspeichern, was je nach Domäne zu Datenschutzproblemen führen können. Weiterhin ist die Inbetriebnahme dieser Lösung etwas komplizierter.
@@ -24,9 +30,12 @@ Die Verwendung der lokalen und cloudbasierten Entwicklungsumgebung hängt stark 
 
 ## Lokal einrichten
 
-Vor der Installation von OpenCV müssen einige Abhängigkeiten installiert werden. Bei linux basierten Betriebssystem wie Ubuntu und OS X könnt ihr OpenCV über die Paketemanager (apt, brew) installieren. Dennoch empfehlen wir euch OpenCV selbst aufzusetzen. Dies hat den Vorteil, dass ihr neuste Versionen von OpenCV installieren könnt und es nach der Installation stabiler läuft.
+Vor der Installation von OpenCV müssen einige Abhängigkeiten installiert werden. Bei Linux basierten Betriebssystemen
+wie Ubuntu und OS X könnt ihr OpenCV über die Paketemanager (apt, brew) installieren. Dennoch empfehlen wir euch 
+OpenCV selbst "from-source" zu kompilieren. Dies hat den Vorteil, dass ihr neuste Versionen von OpenCV installieren 
+könnt und die Installation speziell für eure Hardware optimiert wird.
 
-Weiterhin empfehlen wir euch virtuelle Python Umgebungen mit bspw. virtualenv oder conda aufzusetzen. Ihr könnt auch 
+Weiterhin empfehlen wir euch, virtuelle Python Umgebungen mit bspw. virtualenv oder conda aufzusetzen. Ihr könnt auch 
 lokal eine virtuelle Maschine installieren. Dazu verwenden wir zum Beispiel vmware Fusion. In der Regel sind die Pakete 
 unter Ubuntu am einfachsten einzurichten - aber man kriegt sie auch auf dem Mac zum Laufen. 
 
