@@ -40,13 +40,35 @@ Free-Tier fallen und so keine dauerhaften Storage-Kosten entstehen (auch wenn di
 
 ![storage](/resources/images/aws_configure_storage.png)
 
+Schließlich konfigurieren wir noch eine Security Rule und erlauben, dass man sich per SSH auf der Maschine anmelden 
+darf. Andere Ports schalten wir nicht frei - sondern verwenden später SSH Tunnel, um sie lokal erreichbar zu machen.
+
+![security](/resources/images/aws_security_group.png)
+
+Jetzt starten wir die Maschine und warten ab, bis wir die Pubilic IP auslesen können. Dies machen wir später per 
+boto3 script und automatisieren diese Schritte.
 
 
 ### Auf Server anmelden und auf neuesten Stand bringen
 
-```
-ssh -i ~/.ssh/gpuserver.pem ubuntu@54.154.14.XXX
 
+```bash
+# lege deine Keypair PEM Datei in deinem SSH ordner ab und setze Dateirechte auf nur lesen
+cp ~/Downloads/gpuserver.pem ~/.ssh/
+chmod 400 ~/.ssh/gpuserver.pem
+
+# speichere deine Public IP in einer Umgebungs-Variable
+PUBLIC_IP = "YOUR_IP_HERE"
+
+# füge deinen SSH Key dem SSH-Agent hinz
+
+ssh-agent
+ssh-add ~/.ssh/gpuserver.pem
+
+# jetzt auf dem Server anmelden
+ssh ubuntu@$PUBLIC_IP
+
+# system updaten und rebooten
 sudo -i
 apt update
 apt dist-upgrade
