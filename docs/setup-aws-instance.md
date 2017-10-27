@@ -132,19 +132,14 @@ sudo cp cuda/lib64/* /usr/local/cuda/lib64
 sudo cp cuda/include/* /usr/local/cuda/include/
 ```
 
-## Get Python 3.6
 
-mkdir my_libs
-wget https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tgz
-ubuntu@ip-172-31-1-253:~/my_libs/Python-3.6.3$ ./configure --enable-optimizations
 
-make
-sudo make install
 
 logout/login
-
+pip3 install virtualenv virtualenvwrapper numpy h5py
 mkvirtualenv -p /usr/local/bin/python3.6 computer-vision
 
+### Download OpenCV 3.3
 
 ``` 
 wget -O opencv.zip https://github.com/opencv/opencv/archive/3.3.0.zip
@@ -153,7 +148,7 @@ wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/3.3.
 unzip opencv_contrib.zip
 ```
 
-pip install numpy h5py
+### Configure, Build, Install ...
 
 ``` 
 cd opencv-3.3.0
@@ -168,4 +163,164 @@ $ cmake -D CMAKE_BUILD_TYPE=RELEASE \
     -D INSTALL_PYTHON_EXAMPLES=ON \
     -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.3.0/modules \
     -D BUILD_EXAMPLES=ON ..
-    ```
+    
+make -j4
+sudo make install
+
+sudo ldconfig
+cd ~/.virtualenvs/computer-vision/lib/python3.5/site-packages/
+ln -s /usr/local/lib/python3.5/site-packages/cv2.cpython-35m-x86_64-linux-gnu.so cv2.so
+```
+
+## Install Tensorflow
+
+follow https://www.tensorflow.org/install/install_sources
+sudo apt-get install libcupti-dev
+sudo apt-get install openjdk-8-jdk
+echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
+curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
+sudo apt-get upgrade bazel
+sudo apt-get install python3-numpy python3-dev python3-pip python3-wheel
+
+cd tensorflow
+./configure
+
+``` 
+Extracting Bazel installation...
+You have bazel 0.7.0 installed.
+Please specify the location of python. [Default is /home/ubuntu/.virtualenvs/computer-vision/bin/python]: 
+
+
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+AttributeError: module 'site' has no attribute 'getsitepackages'
+Found possible Python library paths:
+  /home/ubuntu/.virtualenvs/computer-vision/lib/python3.5/site-packages
+Please input the desired Python library path to use.  Default is [/home/ubuntu/.virtualenvs/computer-vision/lib/python3.5/site-packages]
+
+Do you wish to build TensorFlow with jemalloc as malloc support? [Y/n]: 
+jemalloc as malloc support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with Google Cloud Platform support? [Y/n]: 
+Google Cloud Platform support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with Hadoop File System support? [Y/n]: 
+Hadoop File System support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with Amazon S3 File System support? [Y/n]: 
+Amazon S3 File System support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with XLA JIT support? [y/N]: 
+No XLA JIT support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with GDR support? [y/N]: 
+No GDR support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with VERBS support? [y/N]: 
+No VERBS support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with OpenCL support? [y/N]: 
+No OpenCL support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with CUDA support? [y/N]: y
+CUDA support will be enabled for TensorFlow.
+
+Please specify the CUDA SDK version you want to use, e.g. 7.0. [Leave empty to default to CUDA 8.0]: 8.0
+
+
+Please specify the location where CUDA 8.0 toolkit is installed. Refer to README.md for more details. [Default is /usr/local/cuda]: 
+
+
+Please specify the cuDNN version you want to use. [Leave empty to default to cuDNN 6.0]: 
+
+
+Please specify the location where cuDNN 6 library is installed. Refer to README.md for more details. [Default is /usr/local/cuda]:
+
+
+Please specify a list of comma-separated Cuda compute capabilities you want to build with.
+You can find the compute capability of your device at: https://developer.nvidia.com/cuda-gpus.
+Please note that each additional compute capability significantly increases your build time and binary size. [Default is: 3.7]6.1
+
+
+Do you want to use clang as CUDA compiler? [y/N]: 
+nvcc will be used as CUDA compiler.
+
+Please specify which gcc should be used by nvcc as the host compiler. [Default is /usr/bin/gcc]: 
+
+
+Do you wish to build TensorFlow with MPI support? [y/N]: 
+No MPI support will be enabled for TensorFlow.
+
+Please specify optimization flags to use during compilation when bazel option "--config=opt" is specified [Default is -march=native]: 
+
+
+Add "--config=mkl" to your bazel command to build with MKL support.
+Please note that MKL on MacOS or windows is still not supported.
+If you would like to use a local MKL instead of downloading, please set the environment variable "TF_MKL_ROOT" every time before build.
+Configuration finished
+
+```
+
+cat /proc/cpuinfo | grep --color -e sse -e fma -e avx
+bazel build -c opt --config=cuda --copt=-mavx --copt=-mavx2 --copt=-msse4.1 --copt=-mfma --copt=-msse4.2  -k //tensorflow/tools/pip_package:build_pip_package
+bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
+pip install /tmp/tensorflow_pkg/tensorflow-1.4.0rc0-cp35-cp35m-linux_x86_64.whl
+
+### Test Tensorflow
+
+```python
+python 
+Python 3.5.2 (default, Sep 14 2017, 22:51:06) 
+[GCC 5.4.0 20160609] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import tensorflow as tf
+>>> hello = tf.constant('Hello, TensorFlow!')
+>>> sess = tf.Session()
+2017-10-26 08:01:29.978869: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:892] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2017-10-26 08:01:29.979217: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1031] Found device 0 with properties: 
+name: Tesla K80 major: 3 minor: 7 memoryClockRate(GHz): 0.8235
+pciBusID: 0000:00:1e.0
+totalMemory: 11.17GiB freeMemory: 11.10GiB
+2017-10-26 08:01:29.979247: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1094] Ignoring visible gpu device (device: 0, name: Tesla K80, pci bus id: 0000:00:1e.0, compute capability: 3.7) with Cuda compute capability 3.7. The minimum required Cuda capability is 6.1.
+>>> print(sess.run(hello))
+b'Hello, TensorFlow!'
+
+```
+
+
+### INstall oter stuff
+
+pip install scipy pillow imutils h5py requests progressbar2 scikit-learn scikit-image matplotlib keras jupyter
+touch ~/.matplotlib/matplotlibrc
+echo "backend: TkAgg" >> ~/.matplotlib/matplotlibrc
+
+pip install http://download.pytorch.org/whl/cu80/torch-0.2.0.post3-cp35-cp35m-manylinux1_x86_64.whl
+pip install torchvision
+
+
+
+
+### install boost
+
+wget https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2
+tar -xvf boost_1_65_1.tar.bz2
+cd boost_1_65_1
+./bootstrap.sh --with-libraries=python
+export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/python3.5/"
+./b2
+sudo ./b2 install
+
+
+### install dlib
+
+wget http://dlib.net/files/dlib-19.7.tar.bz2
+tar -xvf dlib-19.7.tar.bz2
+cd dlib-19.7
+
+mkdir build
+cd build
+cmake ..
+cmake --build . --config Release
+
+cd ..
+python setup.py install

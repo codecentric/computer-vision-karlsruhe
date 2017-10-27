@@ -1,6 +1,6 @@
 """ simple test script to load and display a video with OpenCV
 
-* 25.10.2017 - Oli Moser (https://twitter.com/moseroli)
+* 27.10.2017 - Oli Moser (https://twitter.com/moseroli)
 """
 
 import cv2
