@@ -39,10 +39,11 @@ ausgeführt wird.
 Als erstes müsst ihr eine AWS Instanz einrichten. Das dauert eine Weile und die etwas umfangreichere 
 Anleitung findet ihr hier: [AWS Instanz einrichten mit GPU / CUDA](/docs/setup-aws-instance.md)
 
-### PyCharm einrichten
+### PyCharm (professional) einrichten
 
-Jetzt konfigurieren wir PyCharm so, dass wir einen Remote Interpreter verwenden und dass wir vor jedem "Run" einen 
-rsync mit dem Zielsystem machen. Per X11 Forwarding können wir dann zusätzlich den Output der Fenster, die auf 
+Wenn ihr PyCharm Professional nutzt kann man mit Remote Interpretern arbeiten. Wir konfigurieren PyCharm so, dass 
+wir einen Remote Interpreter verwenden und dass wir vor jedem "Run" einen rsync mit dem Zielsystem machen. Per X11 
+Forwarding können wir dann zusätzlich den Output der Fenster, die auf 
 der AWS Instanz erzeugt werden, lokal anzeigen. Das funktioniert für Einzelbilder recht gut, bei Videos müssen wir 
 evtl. andere Methoden verwenden. 
 
