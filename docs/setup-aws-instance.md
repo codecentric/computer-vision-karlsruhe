@@ -171,34 +171,40 @@ Thu Oct 19 11:34:32 2017
 +-----------------------------------------------------------------------------+
 ```
 
-## Pfade
+Jetzt noch die Pfade konfigurieren ...
 
-``` 
-echo "/usr/local/cuda-9.0/lib64" >> /etc/ld.so.conf
+```bash
+echo "/usr/local/cuda-8.0/lib64" >> /etc/ld.so.conf
 ldconfig
-echo 'PATH=$PATH:/usr/local/cuda-9.0/bin' >> /etc/profile
+echo 'PATH=$PATH:/usr/local/cuda-8.0/bin' >> /etc/profile
 ```
 
-## cuDNN
-``` 
-scp Downloads/cudnn-9.0-linux-x64-v7.3.tgz ubuntu@YOUR_PUB_IP:~
+### cuDNN installieren
+
+Einfach das runtergeladene cuDNN entpacken und in folgende Ordner schieben:
+
+```bash
+scp Downloads/cudnn-6.0-linux-x64.tgz ubuntu@YOUR_PUB_IP:~
 ssh ubuntu@YOUR_PUB_IP
-tar -xvf cudnn-9.0-linux-x64-v7.3.tgz 
+tar -xvf cudnn-6.0-linux-x64.tgz 
 
 sudo cp cuda/lib64/* /usr/local/cuda/lib64
 sudo cp cuda/include/* /usr/local/cuda/include/
 ```
 
+## Python und OpenCV einrichten
 
+Zunächst richten wir "virtualenv" ein. Damit können wir Python Abhängigkeiten wie in einer Sandbox installieren.
 
-
-logout/login
+```bash
 pip3 install virtualenv virtualenvwrapper numpy h5py
 mkvirtualenv -p /usr/local/bin/python3.6 computer-vision
 
+```
+
 ### Download OpenCV 3.3
 
-``` 
+```bash
 wget -O opencv.zip https://github.com/opencv/opencv/archive/3.3.0.zip
 unzip opencv.zip
 wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/3.3.0.zip
@@ -207,7 +213,7 @@ unzip opencv_contrib.zip
 
 ### Configure, Build, Install ...
 
-``` 
+```bash
 cd opencv-3.3.0
 $ mkdir build
 $ cd build
@@ -225,13 +231,21 @@ make -j4
 sudo make install
 
 sudo ldconfig
+
+
+# jetzt noch das global installierte .so file ins virtualenv mappen
 cd ~/.virtualenvs/computer-vision/lib/python3.5/site-packages/
 ln -s /usr/local/lib/python3.5/site-packages/cv2.cpython-35m-x86_64-linux-gnu.so cv2.so
 ```
 
 ## Install Tensorflow
 
-follow https://www.tensorflow.org/install/install_sources
+Tensorflow ist ein Machine Learning Framework von google. Wir installieren es from source und optimieren es beim 
+Compilieren für die darunter liegende Hardware.
+
+Grob folgen wir der Beschreibung auf: https://www.tensorflow.org/install/install_sources
+
+```bash
 sudo apt-get install libcupti-dev
 sudo apt-get install openjdk-8-jdk
 echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
@@ -239,8 +253,16 @@ curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
 sudo apt-get upgrade bazel
 sudo apt-get install python3-numpy python3-dev python3-pip python3-wheel
 
+git clone https://github.com/tensorflow/tensorflow.git
 cd tensorflow
 ./configure
+
+```
+
+
+Dann die Fragen wie folgt beantworten. Bei der AWS p2.xlarge ist aktuell eine NVIDIA K80 "verbaut". Diese hat die 
+Compute Capability 3.7 ... wenn ihr eine andere Instanz verwendet, müsst ihr bei NVIDIA nachlesen, welche Capabilities 
+die Grafikkarte hat.
 
 ``` 
 Extracting Bazel installation...
@@ -296,7 +318,7 @@ Please specify the location where cuDNN 6 library is installed. Refer to README.
 
 Please specify a list of comma-separated Cuda compute capabilities you want to build with.
 You can find the compute capability of your device at: https://developer.nvidia.com/cuda-gpus.
-Please note that each additional compute capability significantly increases your build time and binary size. [Default is: 3.7]6.1
+Please note that each additional compute capability significantly increases your build time and binary size. [Default is: 3.7]3.7
 
 
 Do you want to use clang as CUDA compiler? [y/N]: 
@@ -318,47 +340,66 @@ Configuration finished
 
 ```
 
+Jetzt müssen wir schauen welche Fähigkeiten die CPU des Systems hat:
+
+```bash
 cat /proc/cpuinfo | grep --color -e sse -e fma -e avx
+```
+
+Aus den Flags ergibt sich folgende Build configuration:
+
+```bash
 bazel build -c opt --config=cuda --copt=-mavx --copt=-mavx2 --copt=-msse4.1 --copt=-mfma --copt=-msse4.2  -k //tensorflow/tools/pip_package:build_pip_package
 bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
 pip install /tmp/tensorflow_pkg/tensorflow-1.4.0rc0-cp35-cp35m-linux_x86_64.whl
+```
 
-### Test Tensorflow
+
+### Test TensorFlow
+
+Jetzt können wir kurz testen, ob die TensorFlow Installation funktioniert und ob sie die GPU verwendet ...
 
 ```python
-python 
+python
 Python 3.5.2 (default, Sep 14 2017, 22:51:06) 
 [GCC 5.4.0 20160609] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import tensorflow as tf
 >>> hello = tf.constant('Hello, TensorFlow!')
 >>> sess = tf.Session()
-2017-10-26 08:01:29.978869: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:892] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2017-10-26 08:01:29.979217: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1031] Found device 0 with properties: 
+2017-10-27 11:26:58.214289: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:892] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2017-10-27 11:26:58.214612: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1031] Found device 0 with properties: 
 name: Tesla K80 major: 3 minor: 7 memoryClockRate(GHz): 0.8235
 pciBusID: 0000:00:1e.0
 totalMemory: 11.17GiB freeMemory: 11.10GiB
-2017-10-26 08:01:29.979247: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1094] Ignoring visible gpu device (device: 0, name: Tesla K80, pci bus id: 0000:00:1e.0, compute capability: 3.7) with Cuda compute capability 3.7. The minimum required Cuda capability is 6.1.
+2017-10-27 11:26:58.214636: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1121] Creating TensorFlow device (/device:GPU:0) -> (device: 0, name: Tesla K80, pci bus id: 0000:00:1e.0, compute capability: 3.7)
 >>> print(sess.run(hello))
 b'Hello, TensorFlow!'
-
 ```
 
 
-### INstall oter stuff
+## Installation von weiteren Tools
 
+Jetzt installieren wir noch ein paar weitere nützliche Tools für Computer Vision
+
+
+### keras, jupyter, ...
+
+```bash
 pip install scipy pillow imutils h5py requests progressbar2 scikit-learn scikit-image matplotlib keras jupyter
 touch ~/.matplotlib/matplotlibrc
 echo "backend: TkAgg" >> ~/.matplotlib/matplotlibrc
 
 pip install http://download.pytorch.org/whl/cu80/torch-0.2.0.post3-cp35-cp35m-manylinux1_x86_64.whl
 pip install torchvision
+```
 
 
+### install boost 
 
+Braucht man für dlib
 
-### install boost
-
+```bash
 wget https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2
 tar -xvf boost_1_65_1.tar.bz2
 cd boost_1_65_1
@@ -366,10 +407,15 @@ cd boost_1_65_1
 export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/python3.5/"
 ./b2
 sudo ./b2 install
+```
 
 
 ### install dlib
 
+dlib ist eine ziemlich gute Library für einige spezielle use cases. Man kann mit dlib z.B. gute Detektoren, trotz 
+kleinem Trainingsset bauen (mmod algo). Ausserdem sind die Facial Landmark Modelle recht gut ...
+
+```bash
 wget http://dlib.net/files/dlib-19.7.tar.bz2
 tar -xvf dlib-19.7.tar.bz2
 cd dlib-19.7
@@ -381,3 +427,8 @@ cmake --build . --config Release
 
 cd ..
 python setup.py install
+```
+
+... so das wäre es erstmal. Wenn jetzt alles funktioniert, am Besten eine Snapshot/Backup vom System machen, so dass 
+man das nicht so bald nochmal alles durchmachen muss.
+
