@@ -1,7 +1,10 @@
 # AWS GPU Instanz mit OpenCV und Tensorflow einrichten
 
+DISCLAIMER: Wir verwenden AWS Resourcen, die nicht mehr in den "Free-Tier" fallen - d.h. es entstehen Kosten und man
+sollte immer darauf achten, dass man unbenötigte Instanzen auch wieder stoppt!
+
 Wer in seinem Notebook keine aktuelle Nvidia Grafikkarte hat, der kann sich eine AWS GPU Instanz bauen und diese
-als Entwicklungsumgebung verwenden.
+als Entwicklungsumgebung verwenden. 
 
 ## Überblick
 
@@ -15,19 +18,29 @@ als Entwicklungsumgebung verwenden.
 
 ### GPU Instanz einrichten 
 
-Als erstes logged man sich in der AWS Console ein und geht in den Bereich "EC2". Dort wählt man "Launch Instance", um 
-eine neue Instanz zu starten.
+Als erstes logged man sich in der AWS Console ein und geht in den Bereich "EC2". 
 
-Inline-style: 
+Als erstes sollte man ein Keypair erstellen.
+
+Danach wählt man "Launch Instance", um eine neue Instanz zu starten.
+
 ![choose_image](/resources/images/aws_choose_image.png)
 
+Als Betriebssystem wählen wir "Ubuntu 16.04 LTS" - die meisten Tools im Bereich Computer Vision sind unter Ubuntu 
+am einfachsten zum Laufen zu bringen.
+
+Danach wählt man einen Instanz Typ aus. Wir verwenden eine "p2.xlarge" Instanz. Die hat genügend RAM / CPU und GPU 
+Leistung für unsere Entwicklungs-Umgebung. Alternativ kann man auch stärkere/schwächere Instanzen wählen - das ist 
+hauptsächlich eine Kostenfrage.
+
+![instance type](/resources/images/aws_choose_instance_type.png)
+
+Als nächstes konfigurieren wir den Storage für die Instanz. Wir verwenden hier 30 GB, da die gerade noch in den 
+Free-Tier fallen und so keine dauerhaften Storage-Kosten entstehen (auch wenn die Instanz gestoppt ist).
+
+![storage](/resources/images/aws_configure_storage.png)
 
 
-* erstelle Keypair "gpu-instance.pem"
-* EBS Festplatte mit 30 GB (30 GB sind im Free-Tier enthalten und verursachen so keine Kosten, 
-  wenn Instanz gestoppt ist)
-* mit Ubuntu Server 16.04 LTS
-* mit öffentlich erreichbarer IP Adresse
 
 ### Auf Server anmelden und auf neuesten Stand bringen
 
