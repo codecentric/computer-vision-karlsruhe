@@ -1,5 +1,15 @@
 # Computer Vision Entwicklungsumgebung (IDE) einrichten
+
+* PyCharm
+* Python 3.5
+* OpenCV 3.3
+* TensorFlow 1.4
+* dlib 19.7
+* CUDA 8, cuDNN 6
+* keras, pytorch, jupyter, uvm. 
+
 ## Einleitung
+
 Bei der Entwicklung von OpenCV Projekten gibt es unterschiedliche Herangehensweisen, die sich für uns im Laufe der Zeit
 heraus kristalliert haben. Einerseits kann mit den lokalen Resourcen auf der eigenen Maschine entwickelt werden. Andererseits kann lokal auf der eigenen Maschine mit den Resourcen aus der Cloud entwickelt werden. Im Folgendem werden die beiden Ansätze sowie die Einrichtung beider Entwicklungsumgebungen beschrieben.
 
@@ -24,7 +34,7 @@ Für die Installation von OpenCV auf einer Ubuntu Distribution empfehlen wir euc
 
 ### Os X
 * [Brew opencv](https://www.pyimagesearch.com/2016/12/19/install-opencv-3-on-macos-with-homebrew-the-easy-way/)
-* []()
+* [OpenCV from Source](https://www.pyimagesearch.com/2016/12/05/macos-install-opencv-3-and-python-3-5/)
 
 
 ## Lokal coden, remote Execution
@@ -39,7 +49,7 @@ ausgeführt wird.
 Als erstes müsst ihr eine AWS Instanz einrichten. Das dauert eine Weile und die etwas umfangreichere 
 Anleitung findet ihr hier: [AWS Instanz einrichten mit GPU / CUDA](/docs/setup-aws-instance.md)
 
-### PyCharm (professional) einrichten
+### PyCharm (professional) einrichten 
 
 Wenn ihr PyCharm Professional nutzt kann man mit Remote Interpretern arbeiten. Wir konfigurieren PyCharm so, dass 
 wir einen Remote Interpreter verwenden und dass wir vor jedem "Run" einen rsync mit dem Zielsystem machen. Per X11 
