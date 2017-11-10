@@ -61,7 +61,7 @@ ausgeführt wird.
 ### AWS Instanz einrichten
 
 Als erstes müsst ihr eine AWS Instanz einrichten. Das dauert eine Weile und die etwas umfangreichere 
-Anleitung findet ihr hier: [AWS Instanz einrichten mit GPU / CUDA](/docs/setup-aws-instance.md)
+Anleitung findet ihr hier: [AWS Instanz einrichten mit GPU / CUDA](setup-aws-instance.md)
 
 ### PyCharm (professional) einrichten 
 
