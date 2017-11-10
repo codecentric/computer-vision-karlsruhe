@@ -1,7 +1,5 @@
 # Computer Vision Karlsruhe
 
-![meetup CV Karlsruhe](resources/images/meetup-banner.png)
-
 Das Repository der Meetup Gruppe "Computer Vision Karlsruhe" (https://www.meetup.com/Computer-Vision-Karlsruhe/).
 
 Unser erstes Meetup war am 07.11.2017. Zur Einführung ins Thema OpenCV haben wir eine 
