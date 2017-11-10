@@ -24,7 +24,7 @@ Als erstes sollte man ein Keypair erstellen.
 
 Danach wählt man "Launch Instance", um eine neue Instanz zu starten.
 
-![choose_image](/resources/images/aws_choose_image.png)
+![choose_image](../resources/images/aws_choose_image.png)
 
 Als Betriebssystem wählen wir "Ubuntu 16.04 LTS" - die meisten Tools im Bereich Computer Vision sind unter Ubuntu 
 am einfachsten zum Laufen zu bringen.
@@ -33,17 +33,17 @@ Danach wählt man einen Instanz Typ aus. Wir verwenden eine "p2.xlarge" Instanz.
 Leistung für unsere Entwicklungs-Umgebung. Alternativ kann man auch stärkere/schwächere Instanzen wählen - das ist 
 hauptsächlich eine Kostenfrage.
 
-![instance type](/resources/images/aws_choose_instance_type.png)
+![instance type](../resources/images/aws_choose_instance_type.png)
 
 Als nächstes konfigurieren wir den Storage für die Instanz. Wir verwenden hier 30 GB, da die gerade noch in den 
 Free-Tier fallen und so keine dauerhaften Storage-Kosten entstehen (auch wenn die Instanz gestoppt ist).
 
-![storage](/resources/images/aws_configure_storage.png)
+![storage](../resources/images/aws_configure_storage.png)
 
 Schließlich konfigurieren wir noch eine Security Rule und erlauben, dass man sich per SSH auf der Maschine anmelden 
 darf. Andere Ports schalten wir nicht frei - sondern verwenden später SSH Tunnel, um sie lokal erreichbar zu machen.
 
-![security](/resources/images/aws_security_group.png)
+![security](../resources/images/aws_security_group.png)
 
 Jetzt starten wir die Maschine und warten ab, bis wir die Pubilic IP auslesen können. Dies machen wir später per 
 boto3 script und automatisieren diese Schritte.
