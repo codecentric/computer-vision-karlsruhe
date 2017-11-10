@@ -22,3 +22,4 @@ auch noch eine [OpenCV Einführung](https://blog.codecentric.de/2017/06/einfuehr
 * Oli Moser [https://twitter.com/moseroli](https://twitter.com/moseroli)
 * Nico Axtmann
 
+
