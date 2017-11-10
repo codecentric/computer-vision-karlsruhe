@@ -72,13 +72,13 @@ der AWS Instanz erzeugt werden, lokal anzeigen. Das funktioniert für Einzelbild
 evtl. andere Methoden verwenden. 
 
 Geht im PyCharm auf Preferences / Deployment und richtet einen SFTP Server ein.
-![remote_server](/resources/images/remote_deployment_server.png)
+![remote_server](../resources/images/remote_deployment_server.png)
 
 Unter Project Interpreter fügen wir einen Remote-Interpreter hinzu.
-![remote_interpreter](/resources/images/remote_interpreter.png)
+![remote_interpreter](../resources/images/remote_interpreter.png)
 
 Bei der Default Run Configuration müssen div. Umgebungsvariablen gesetzt werden.
-![run_config](/resources/images/run_config.png) 
+![run_config](../resources/images/run_config.png) 
 
 Danach könnt ihr lokal in eurer PyCharm IDE entwickeln und den Code im Remote Interpreter auf der AWS Instanz laufen 
 lassen. Damit das X-Forwarding funktioniert, müsst ihr wie folgt auf der Maschine angemeldet sein (-X Parameter für 
